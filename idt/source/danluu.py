@@ -1,28 +1,22 @@
 import urllib
 import markdown2
-from typing import List
-from html.parser import HTMLParser
+from bs4 import BeautifulSoup
+from typing import Set
 
 URL = "https://raw.githubusercontent.com/danluu/post-mortems/master/README.md"
 
 
-class LinkParser(HTMLParser):
-    def __init__(self, dest):
-        super().__init__()
-        self.dest = dest
-
-    def handle_starttag(self, tag, attrs):
-        if tag == "a":
-            for name, value in attrs:
-                if name == "href":
-                    parsed = urllib.parse.urlparse(value)
-                    if parsed and parsed[1]:
-                        self.dest.add(parsed[1])
+def parse_domain(link):
+    href = link.attrs.get("href")
+    if href:
+        parsed = urllib.parse.urlparse(href)
+        if parsed:
+            return parsed[1]
+    return None
 
 
-def extract_domains(text: str) -> List[str]:
+def extract_domains(text: str) -> Set[str]:
     html = markdown2.markdown(text)
-    domains = set()
-    parser = LinkParser(domains)
-    parser.feed(html)
-    return sorted(domains)
+    soup = BeautifulSoup(html, "html.parser")
+    links = soup.find_all("a")
+    return set(filter(None, (parse_domain(l) for l in links)))
