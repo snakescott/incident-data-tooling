@@ -23,7 +23,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-import incident_data_tooling
+import incident_data_tooling  # noqa: F401
 
 # -- General configuration ---------------------------------------------
 
