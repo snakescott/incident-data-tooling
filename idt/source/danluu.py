@@ -1,4 +1,3 @@
-import requests
 import urllib
 import markdown2
 from typing import List

@@ -1,6 +1,4 @@
 import urllib
-import requests
-from html.parser import HTMLParser
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
@@ -8,7 +6,6 @@ URL = "https://statusgator.com"
 
 
 def extract_service_urls(html):
-    urls = set()
     soup = BeautifulSoup(html, "html.parser")
     links = soup.find_all(
         "a", attrs={"href": lambda href: href and href.startswith("/services/")}
