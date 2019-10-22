@@ -1,4 +1,4 @@
-from idt import statuspageio
+from idt.source import statuspageio
 
 
 def test_domain():
